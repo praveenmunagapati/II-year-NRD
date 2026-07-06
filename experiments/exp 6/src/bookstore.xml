@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  1. DOCTYPE declaration: Points to the external 'bookstore.dtd' file 
+     to validate the structural elements of this XML.
+-->
+<!DOCTYPE bookstore SYSTEM "bookstore.dtd">
+
+<!--
+  2. Bookstore root element:
+     'xsi:noNamespaceSchemaLocation' links this XML instance directly to 
+     the schema definition file 'bookstore.xsd' for strict data-type checking.
+-->
+<bookstore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="bookstore.xsd">
+
+    <!-- Book Entry 1 -->
+    <book id="B01" category="Programming">
+        <title>Pro MERN Stack</title>
+        <author>Vasan Subramanian</author>
+        <year>2019</year>
+        <price>49.99</price>
+    </book>
+
+    <!-- Book Entry 2 -->
+    <book id="B02" category="Web Development">
+        <title>Beginning HTML, CSS and JavaScript</title>
+        <author>Jon Duckett</author>
+        <year>2010</year>
+        <price>29.99</price>
+    </book>
+
+    <!-- Book Entry 3 -->
+    <book id="B03" category="Fiction">
+        <title>The Great Gatsby</title>
+        <author>F. Scott Fitzgerald</author>
+        <year>1925</year>
+        <price>14.95</price>
+    </book>
+
+</bookstore>

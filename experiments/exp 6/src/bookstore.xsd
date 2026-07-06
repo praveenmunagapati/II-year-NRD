@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           elementFormDefault="qualified">
+
+    <!-- Define Bookstore as the Root Element -->
+    <xs:element name="bookstore">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Bookstore holds 1 to unbounded (unlimited) occurrences of 'book' -->
+                <xs:element name="book" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <!-- 'title' is a standard string data type -->
+                            <xs:element name="title" type="xs:string"/>
+                            
+                            <!-- 'author' is a standard string data type -->
+                            <xs:element name="author" type="xs:string"/>
+                            
+                            <!-- 'year' is configured as a whole positive integer -->
+                            <xs:element name="year" type="xs:positiveInteger"/>
+                            
+                            <!-- 'price' is configured as a fractional decimal value -->
+                            <xs:element name="price" type="xs:decimal"/>
+                        </xs:sequence>
+                        
+                        <!-- Define Attribute elements for 'book' -->
+                        <xs:attribute name="id" type="xs:string" use="required"/>
+                        <xs:attribute name="category" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

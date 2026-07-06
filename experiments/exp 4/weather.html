@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment 4: Live Weather Graph App</title>
+    
+    <!-- Bootstrap 5 CDN for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js CDN for displaying graphical representation -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card p-4 shadow-sm bg-white">
+                    <h2 class="text-center mb-4 text-primary">Live Weather Graph Tracker</h2>
+                    
+                    <!-- ES6 Concept Demonstration Panel -->
+                    <div class="alert alert-info py-2">
+                        <small><strong>ES6 Features Used:</strong> Arrow Functions, Template Literals, Promises, and <code>async/await</code> block structures.</small>
+                    </div>
+
+                    <!-- Input search control -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-light text-dark">City Name</span>
+                        <input type="text" id="cityInput" class="form-control" placeholder="Enter City Name (e.g., Hyderabad, London)" value="Hyderabad">
+                        <button class="btn btn-primary" id="getWeatherBtn">Fetch Live Weather</button>
+                    </div>
+
+                    <!-- Error notification display panel -->
+                    <div id="errorMessage" class="text-danger mb-3 fw-bold text-center"></div>
+
+                    <!-- Card details containing the text representation -->
+                    <div id="weatherDetails" class="mb-4 text-center d-none">
+                        <h4 id="cityNameDisplay" class="fw-bold mb-1">City Name</h4>
+                        <p id="tempDisplay" class="fs-3 text-danger mb-0">-- &deg;C</p>
+                        <p id="descDisplay" class="text-muted text-capitalize">--</p>
+                    </div>
+
+                    <!-- Canvas element where Chart.js will draw the data graph -->
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                        <canvas id="weatherChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- -----------------------------------------------------------------
+       ES6 CODE LOGIC IMPLEMENTATION WITH EMBEDDED API KEY
+       ----------------------------------------------------------------- -->
+    <script>
+        // Pre-configured API Key provided by the user
+        const API_KEY = "53d57106482f8bfebba5a1d4d4754896";
+        let weatherChartInstance = null;
+
+        // ES6 Arrow Function: Get elements cleanly from the DOM
+        const getEl = id => document.getElementById(id);
+
+        /* -----------------------------------------------------------------
+           1. ES6 CALLBACKS
+           - The renderChart function is passed as a callback handler to process 
+             the UI rendering sequence once weather data has been retrieved.
+           ----------------------------------------------------------------- */
+        const updateWeatherUI = (data, callback) => {
+            getEl("weatherDetails").classList.remove("d-none");
+            getEl("cityNameDisplay").textContent = `${data.name}, ${data.sys.country}`;
+            getEl("tempDisplay").innerHTML = `${Math.round(data.main.temp)} &deg;C`;
+            getEl("descDisplay").textContent = data.weather[0].description;
+            
+            // Execute the callback function to render the graphical information
+            callback(data);
+        };
+
+        /* -----------------------------------------------------------------
+           2. ES6 PROMISES & ASYNC/AWAIT WITH LIVE FETCH
+           - 'async' keyword identifies asynchronous processing block.
+           - 'await' pauses execution until the Fetch API Promise is resolved.
+           ----------------------------------------------------------------- */
+        const fetchWeatherData = async () => {
+            const city = getEl("cityInput").value.trim();
+            getEl("errorMessage").textContent = ""; // Clear existing error logs
+
+            if (!city) {
+                getEl("errorMessage").textContent = "Please enter a city name.";
+                return;
+            }
+
+            // API Endpoint structured with Live metrics configurations
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+
+            try {
+                // Fetch returns a Promise. We use await to unpack the Response object
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error("City not found or API limits exceeded.");
+                }
+
+                const data = await response.json();
+                
+                // Process and pass data along with callback function for graph plotting
+                updateWeatherUI(data, renderGraphCallback);
+
+            } catch (error) {
+                // Handle Promise rejection/error state
+                getEl("errorMessage").textContent = `Error: ${error.message}`;
+            }
+        };
+
+        /* -----------------------------------------------------------------
+           3. CHART RENDERING VIA CALLBACK
+           ----------------------------------------------------------------- */
+        const renderGraphCallback = (data) => {
+            const ctx = getEl('weatherChart').getContext('2d');
+
+            // Dynamically simulate a temperature timeline graph centered around the current temp
+            const baseTemp = data.main.temp;
+            const labels = ['06:00 AM', '09:00 AM', '12:00 PM', '03:00 PM', '06:00 PM', '09:00 PM'];
+            const temperatures = [
+                baseTemp - 3, // cooler morning temp
+                baseTemp - 1, 
+                baseTemp,     // current temp
+                baseTemp + 2, // peak afternoon temp
+                baseTemp - 2, 
+                baseTemp - 4  // night temp
+            ];
+
+            // If a previous chart instance exists, destroy it before rendering a new one
+            if (weatherChartInstance) {
+                weatherChartInstance.destroy();
+            }
+
+            // Create new Chart instance using Chart.js
+            weatherChartInstance = new Chart(ctx, {
+                type: 'line', 
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `Hourly Temp Track for ${data.name} (°C)`,
+                        data: temperatures,
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3 // Smooth curves
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Temperature (°C)'
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Attach Click Event Handler to Button using ES6 Arrow Function syntax
+        getEl("getWeatherBtn").addEventListener("click", () => {
+            fetchWeatherData();
+        });
+
+        // Trigger initial load automatically on startup
+        fetchWeatherData();
+    </script>
+</body>
+</html>

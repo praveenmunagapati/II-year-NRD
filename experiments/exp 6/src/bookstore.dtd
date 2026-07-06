@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!--
+          DTD Rules:
+          - 'bookstore' contains one or more 'book' elements.
+          - Each 'book' contains exactly one title, author, year, and price.
+        -->
+        <!ELEMENT bookstore (book+)>
+        <!ELEMENT book (title, author, year, price)>
+
+        <!-- Sub-elements definition -->
+        <!ELEMENT title (#PCDATA)>
+        <!ELEMENT author (#PCDATA)>
+        <!ELEMENT year (#PCDATA)>
+        <!ELEMENT price (#PCDATA)>
+
+        <!--
+          1. Root Element Bookstore Attributes:
+          We declare XML schema namespace attributes as CDATA #IMPLIED (optional)
+          so that strict DTD parser checks do not fail when XSD attributes are present.
+        -->
+        <!ATTLIST bookstore
+                xmlns:xsi CDATA #IMPLIED
+                xsi:noNamespaceSchemaLocation CDATA #IMPLIED>
+
+        <!--
+          2. Book Element Attributes
+        -->
+        <!ATTLIST book
+                id ID #REQUIRED
+                category CDATA #REQUIRED>

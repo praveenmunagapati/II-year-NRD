@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog - Shopping Cart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="catalog.html" class="brand">E-Shop</a>
+            <ul class="nav-links">
+                <li><a href="catalog.html" class="active">Catalog</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2 style="margin-bottom: 25px; color: #2c3e50;">Products Catalog</h2>
+        
+        <div class="catalog-grid">
+            <!-- Product Item 1 -->
+            <div class="product-card">
+                <div class="product-image">Product Image 1</div>
+                <div class="product-info">
+                    <h3>Wireless Headphones</h3>
+                    <p>Noise-canceling over-ear wireless headphones with long battery life.</p>
+                </div>
+                <div class="product-price">$99.99</div>
+                <button class="btn" onclick="location.href='cart.html'">Add to Cart</button>
+            </div>
+
+            <!-- Product Item 2 -->
+            <div class="product-card">
+                <div class="product-image">Product Image 2</div>
+                <div class="product-info">
+                    <h3>Smart Watch</h3>
+                    <p>Water-resistant fitness tracker smart watch with heart rate monitor.</p>
+                </div>
+                <div class="product-price">$149.99</div>
+                <button class="btn" onclick="location.href='cart.html'">Add to Cart</button>
+            </div>
+
+            <!-- Product Item 3 -->
+            <div class="product-card">
+                <div class="product-image">Product Image 3</div>
+                <div class="product-info">
+                    <h3>Mechanical Keyboard</h3>
+                    <p>RGB backlit mechanical keyboard with customizable tactile switches.</p>
+                </div>
+                <div class="product-price">$89.99</div>
+                <button class="btn" onclick="location.href='cart.html'">Add to Cart</button>
+            </div>
+
+            <!-- Product Item 4 -->
+            <div class="product-card">
+                <div class="product-image">Product Image 4</div>
+                <div class="product-info">
+                    <h3>Gaming Mouse</h3>
+                    <p>Ergonomic gaming mouse featuring optical sensor and custom buttons.</p>
+                </div>
+                <div class="product-price">$49.99</div>
+                <button class="btn" onclick="location.href='cart.html'">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 E-Shop Application. All rights reserved.
+    </footer>
+</body>
+</html>
